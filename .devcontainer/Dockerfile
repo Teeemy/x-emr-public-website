@@ -1,15 +1,23 @@
-# This Dockerfile is for local devolopment
-
+# Use Node 22 Alpine
 FROM node:22-alpine
 
+# Set working directory
 WORKDIR /app
 
-COPY ./package*.json /app
+# Copy package.json and package-lock.json
+COPY package*.json ./
 
+# Install dependencies
 RUN npm install
 
-COPY . /app/ 
+# Copy the rest of the app
+COPY . .
 
-EXPOSE 8080
+# Build the Next.js app
+RUN npm run build
 
-CMD [ "node", "index.js" ]
+# Expose the port Next.js will use
+EXPOSE 3000
+
+# Start the app in production mode
+CMD ["npm", "start"]
